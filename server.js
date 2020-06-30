@@ -1,14 +1,14 @@
 const express= require('express');
 const mongoose= require('mongoose');
 const bodyParser= require('body-parser');
-const port=8000;
+
+const PORT= process.env.PORT || 8000;
 const app= express();
 
-app.use(bodyParser.json());
+const User = require('./models/User');
+mongoose.connect('mongodb://localhost:27017/userData');
 
-app.listen(port, ()=>{
-	console.log(`server is listening on port:${port}`)
-});
+app.use(bodyParser.json());
 
 // CREATE
 app.post('/users',(req,res)=>{
@@ -28,3 +28,5 @@ app.route('/users/:id')
 .delete((req,res)=>{
   // User.findByIdAndDelete()
 });
+
+app.listen(PORT, () => console.log(`server is listening on port:${PORT}`);
