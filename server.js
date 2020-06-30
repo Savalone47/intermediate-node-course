@@ -43,14 +43,48 @@ app.post('/users', (req, res) => {
 })
 
 app.route('/users/:id')
-// READ
-.get((req,res)=>{
-  // User.findById()
-})
+	.get((req,res)=>{
+		User.findById(req.params.id, (err, data) => {
+			if(err){
+				res.json({
+					success: true,
+					message: err
+				});
+			}else if(!data){
+				res.json({
+					success: true,
+					message: "Not found"
+				});
+			}else{
+				res.json({
+					success:true,
+					data: data
+				});
+			}
+		})
+	})
+
 // UPDATE
-.put((req,res)=>{
-  // User.findByIdAndUpdate()
-})
+	.put((req,res)=>{
+		User.findByIdAndUpdate(req.params.id, 
+		{
+			name: req.body.name, 
+			email: req.body.email,
+			password: req.body.password
+		},
+		{
+			new : true
+		},
+		(err, data) =>{
+			if(err){
+				res.json({success: false, message: err});
+			}else if(!data){
+				res.json({success:false, message: "Not found"});
+			}else{
+				res.json({success:true, data: data});
+			}
+		});
+	})
 // DELETE
 .delete((req,res)=>{
   // User.findByIdAndDelete()
